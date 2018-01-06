@@ -27,12 +27,12 @@ void initialiserPlateau(Unite *plateau[LONG][LARG]) {
 int creerUnite(char genre, UListe *uliste) {
   Unite *temp;
   temp = calloc(1, sizeof(*(uliste->unites)));
-  temp->genre = genre;
-  temp->couleur = uliste->couleur;
-  temp->suiv = NULL;
   if(temp == NULL) {
     return 0;
   } else {
+    temp->genre = genre;
+    temp->couleur = uliste->couleur;
+    temp->suiv = NULL;
     if(uliste->unites == NULL) {
       uliste->unites = temp;
     } else {
