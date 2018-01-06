@@ -4,14 +4,14 @@
 /* dimension du monde en nombre de cases */
 #define LONG 12
 #define LARG 18
-/* l�origine est en haut a gauche */
-#define ROUGE 'R' //identifiant du premier joueur
-#define BLEU 'B' //identifiant du deuxi`eme joueur
-/* les genres d�unites */
+/* l'origine est en haut a gauche */
+#define ROUGE 'R' /* identifiant du premier joueur */
+#define BLEU 'B' /* identifiant du deuxième joueur */
+/* les genres d'unites */
 #define SERF 's'
 #define GUERRIER 'g'
 
-typedef struct unite{
+typedef struct Unite {
     int posX,posY;
     char couleur;
     char genre;
@@ -19,13 +19,17 @@ typedef struct unite{
 
 } Unite;
 
-typedef Unite* UListe;
+/*J'ai changé le Uliste, car chaque liste a une couleur. Lorsqu'une unité rentre dans une liste, il prend immédiatement la couleur de cette liste*/
+typedef struct UListe{
+  Unite *unites;
+  char couleur;
+} UListe;
 
 
-typedef struct monde{
+typedef struct Monde{
   Unite *plateau[LONG][LARG];
   int tour;   /* Numero du tour */
-  UListe rouge, bleu; /*Listes des deux joueurs*/
+  UListe *rouge, *bleu; /*Listes des deux joueurs*/
 } Monde;
 
-#endif // STRUCTURES_H_INCLUDED
+#endif /* STRUCTURES_H_INCLUDED */
