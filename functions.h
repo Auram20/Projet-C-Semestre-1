@@ -11,5 +11,8 @@ int placerAuMonde(Unite *unite, Monde *monde, size_t posX, size_t posY);
 void affichePlateau(Monde monde);
 void ligne();
 Unite *dernier(UListe uliste);
+void enleverUnite(Unite *unite, Monde* monde);
+Unite *unitePrec(Unite *unite, UListe *uliste);
+UListe *getUListe(char couleur, Monde *monde);
 
 #endif /* FUNCTIONS_H_INCLUDED */

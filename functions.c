@@ -102,3 +102,36 @@ void ligne() {
   }
   printf("\n");
 }
+
+void enleverUnite(Unite *unite, Monde *monde) {
+  Unite *unitePrec = unitePrec(unite, getUListe(unite->couleur, monde));
+  if(unitePrec == unite) {
+    unitePrec = unite->suiv;
+  } else if(unitePrec != NULL) {
+    unitePrec->suiv = unite->suiv;
+  }
+
+  monde->plateau[unite->posX][unite->posY] = NULL;
+}
+
+UListe *getUListe(char couleur, Monde *monde) {
+  if(couleur == (monde->rouge)->couleur) {
+    return (monde->rouge);
+  }
+  else if(couleur == (monde->bleu)->couleur) {
+    return (monde->bleu);
+  }
+  else {
+    return NULL;
+  }
+
+}
+
+Unite *unitePrec(Unite *unite, UListe *uliste) {
+  Unite *search;
+  search = uliste->unites;
+  while(search != NULL || search->suiv != unite || search != unite) {
+    search = search->suiv;
+  }
+  return search;
+}
