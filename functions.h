@@ -4,7 +4,7 @@
 #include "structures.h"
 #include <stdio.h>
 
-void initialiserMonde(Monde *monde);
+int initialiserMonde(Monde *monde);
 void initialiserPlateau(Unite *plateau[LONG][LARG]);
 int creerUnite(char genre, UListe *uliste);
 int placerAuMonde(Unite *unite, Monde *monde, size_t posX, size_t posY);

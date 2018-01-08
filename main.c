@@ -7,7 +7,10 @@
 
 int main(void) {
   Monde monmonde;
-  initialiserMonde(&monmonde);
+  if(!initialiserMonde(&monmonde)) {
+    printf("Erreur Mémoire\n");
+    return EXIT_FAILURE;
+  }
   affichePlateau(monmonde);
   creerUnite(GUERRIER, monmonde.rouge);
   placerAuMonde((monmonde.rouge)->unites, &monmonde, 0, 0);

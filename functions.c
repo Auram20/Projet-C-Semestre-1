@@ -3,15 +3,22 @@
 #include "structures.h"
 #include "functions.h"
 
-void initialiserMonde(Monde *monde){
+int initialiserMonde(Monde *monde){
     monde->tour = 0;
     initialiserPlateau(monde->plateau);
     (monde->rouge) = calloc(1, sizeof(*(monde->rouge)));
+    if((monde->rouge) == NULL) {
+      return 0;
+    }
     (monde->rouge)->couleur = ROUGE;
     (monde->rouge)->unites = NULL;
     (monde->bleu) = calloc(1, sizeof(*(monde->bleu)));
+    if((monde->bleu) == NULL) {
+      return 0;
+    }
     (monde->bleu)->couleur = BLEU;
     (monde->bleu)->unites = NULL;
+    return 1;
 }
 
 /*Je suis obligé de mettre les tailles du tableau pour une raison que j'ignore*/
