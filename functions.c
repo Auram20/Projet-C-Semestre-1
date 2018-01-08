@@ -95,10 +95,29 @@ void affichePlateau(Monde monde) {
   ligne();
 }
 
+
+
 void ligne() {
   int i;
   for(i = 0; i < LARG * 5 + 1; ++i) {
     printf("-");
   }
   printf("\n");
+
+}
+
+
+int deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
+    if(monde->plateau[destX][destY] != NULL || unite->posX >= LONG || unite->posY >= LARG) {
+    return 0;
+  } else {   
+        if ( abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ){ /* On verifie que c'est un déplacement adjascent */
+                    monde->plateau[unite->posX][unite->posY]=NULL;    
+                    unite->posX = destX;
+                    unite->posY = destY;
+                    monde->plateau[destX][destY] = unite;
+                    return 1; }
+        return 0;
+        }
+    
 }
