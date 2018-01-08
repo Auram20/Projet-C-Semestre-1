@@ -15,5 +15,6 @@ void enleverUnite(Unite *unite, Monde* monde);
 Unite *getUnitePrec(Unite *unite, UListe *uliste);
 UListe *getUListe(char couleur, Monde *monde);
 void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY);
+void gererTourJoueur(char couleur, Monde *monde);
 
 #endif /* FUNCTIONS_H_INCLUDED */

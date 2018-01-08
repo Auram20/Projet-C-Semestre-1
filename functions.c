@@ -146,8 +146,42 @@ UListe *getUListe(char couleur, Monde *monde) {
 Unite *getUnitePrec(Unite *unite, UListe *uliste) {
   Unite *search;
   search = uliste->unites;
-  while(search != NULL || search->suiv != unite || search != unite) {
+  while(search != NULL && search->suiv != unite && search != unite) {
     search = search->suiv;
   }
   return search;
+}
+
+void gererTourJoueur(char couleur, Monde *monde) {
+  affichePlateau(*monde);
+  printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
+  Unite *uniteSel = parcourirUnites(getUListe(couleur, monde));
+
+}
+
+Unite *parcourirUnites(UListe uliste) {
+  char cmd = 'n';
+  Unite *selection;
+  selection = uliste.unites;
+  while(cmd != 'o') {
+    if(selection->suiv == NULL) {
+      selection = uliste.unites;
+    } else {
+      selection = selection->suiv;
+    }
+    afficherUnite(*selection);
+    printf("Voulez-vous le sélectionner ? (o/n)\n");
+    scanf("%c", cmd);
+  }
+
+  return selection;
+}
+
+void *actionUnite(Unite *unite, Monde *monde) {
+  printf("Que voulez-vous faire ?")
+}
+
+void afficherUnite(Unite unite) {
+  printf("\tGenre : %c\n", unite.genre);
+  printf("\tPositions x,y : %d,%d\n", unite.posX, unite.posY);
 }

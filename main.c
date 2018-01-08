@@ -14,8 +14,10 @@ int main(void) {
   affichePlateau(monmonde);
   creerUnite(GUERRIER, monmonde.rouge);
   placerAuMonde((monmonde.rouge)->unites, &monmonde, 10, 6);
-  affichePlateau(monmonde); 
+  affichePlateau(monmonde);
   deplacerUnite((monmonde.rouge)->unites, &monmonde, 9, 5);
+  affichePlateau(monmonde);
+  enleverUnite((monmonde.rouge)->unites, &monmonde);
   affichePlateau(monmonde);
 
   return EXIT_SUCCESS;
