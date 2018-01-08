@@ -174,3 +174,32 @@ int attaquer(Unite *unite, Monde *monde, int destX, int destY){
 }
 
 
+int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
+    if( destX >= LONG || destY >= LARG){
+        return -1;
+    }
+    
+    if( destX <= LONG && destY <= LARG && abs(destX-(unite->posX))>=1 && abs(destY-(unite->posY))>=1 ){
+        return -2;
+    }
+    
+       if(monde->plateau[destX][destY]->genre == unite->genre){
+        return -3;
+    }
+ 
+    if(monde->plateau[destX][destY] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjascent */
+    {   deplacerUnite(unite,monde,destX,destY);
+     
+        return 1; 
+    }
+    
+    if(monde->plateau[destX][destY]->genre != unite->genre  && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ){
+        attaquer(unite,monde,destX,destY);
+        if ((attaquer(unite,monde,destX,destY))==1){
+            return 2;
+        }
+        return 3;
+    }
+    return 0;
+    
+}
