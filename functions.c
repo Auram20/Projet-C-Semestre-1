@@ -95,16 +95,32 @@ void affichePlateau(Monde monde) {
   ligne();
 }
 
+
+
 void ligne() {
   int i;
   for(i = 0; i < LARG * 5 + 1; ++i) {
     printf("-");
   }
   printf("\n");
+
+}
+
+
+void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
+    if(monde->plateau[destX][destY] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjascent */
+    {
+                    monde->plateau[unite->posX][unite->posY]=NULL;
+                    unite->posX = destX;
+                    unite->posY = destY;
+                    monde->plateau[destX][destY] = unite;
+
+        }
+
 }
 
 void enleverUnite(Unite *unite, Monde *monde) {
-  Unite *unitePrec = unitePrec(unite, getUListe(unite->couleur, monde));
+  Unite *unitePrec = getUnitePrec(unite, getUListe(unite->couleur, monde));
   if(unitePrec == unite) {
     unitePrec = unite->suiv;
   } else if(unitePrec != NULL) {
@@ -127,7 +143,7 @@ UListe *getUListe(char couleur, Monde *monde) {
 
 }
 
-Unite *unitePrec(Unite *unite, UListe *uliste) {
+Unite *getUnitePrec(Unite *unite, UListe *uliste) {
   Unite *search;
   search = uliste->unites;
   while(search != NULL || search->suiv != unite || search != unite) {
