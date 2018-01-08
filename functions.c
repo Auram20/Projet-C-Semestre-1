@@ -53,7 +53,7 @@ int creerUnite(char genre, UListe *uliste) {
 Unite *dernier(UListe uliste) {
   Unite *unite;
   unite = uliste.unites;
-  while(unite != NULL) {
+  while(unite != NULL && unite->suiv != NULL) {
     unite = (unite->suiv);
   }
   return unite;
@@ -130,6 +130,10 @@ void enleverUnite(Unite *unite, Monde *monde) {
   monde->plateau[unite->posX][unite->posY] = NULL;
 }
 
+
+
+
+
 UListe *getUListe(char couleur, Monde *monde) {
   if(couleur == (monde->rouge)->couleur) {
     return (monde->rouge);
@@ -152,7 +156,7 @@ Unite *getUnitePrec(Unite *unite, UListe *uliste) {
   return search;
 }
 
-void gererTourJoueur(char couleur, Monde *monde) {
+/*void gererTourJoueur(char couleur, Monde *monde) {
   affichePlateau(*monde);
   printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
   Unite *uniteSel = parcourirUnites(getUListe(couleur, monde));
@@ -184,4 +188,50 @@ void *actionUnite(Unite *unite, Monde *monde) {
 void afficherUnite(Unite unite) {
   printf("\tGenre : %c\n", unite.genre);
   printf("\tPositions x,y : %d,%d\n", unite.posX, unite.posY);
+}*/
+
+
+int attaquer(Unite *unite, Monde *monde, int destX, int destY){
+    if(monde->plateau[destX][destY] !=NULL){
+                if (unite->genre==GUERRIER || unite->genre==monde->plateau[destX][destY]->genre){
+                    enleverUnite(monde->plateau[destX][destY],monde);
+                    deplacerUnite(unite,monde,destX,destY);
+                    return 1;
+    }
+         enleverUnite(unite,monde);
+        return 0;
+    }
+
+   return 0;
+
+}
+
+
+int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
+    if( destX >= LONG || destY >= LARG){
+        return -1;
+    }
+
+    if( destX <= LONG && destY <= LARG && abs(destX-(unite->posX))>=1 && abs(destY-(unite->posY))>=1 ){
+        return -2;
+    }
+
+       if(monde->plateau[destX][destY]->genre == unite->genre){
+        return -3;
+    }
+
+    if(monde->plateau[destX][destY] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjascent */
+    {   deplacerUnite(unite,monde,destX,destY);
+
+        return 1;
+    }
+
+    if(monde->plateau[destX][destY]->genre != unite->genre  && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ){
+        attaquer(unite,monde,destX,destY);
+        if ((attaquer(unite,monde,destX,destY))==1){
+            return 2;
+        }
+        return 3;
+    }
+    return 0;
 }

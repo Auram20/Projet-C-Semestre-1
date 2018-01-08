@@ -12,10 +12,14 @@ int main(void) {
     return EXIT_FAILURE;
   }
   affichePlateau(monmonde);
-  creerUnite(GUERRIER, monmonde.rouge);
+  creerUnite(SERF, monmonde.rouge);
+  creerUnite(GUERRIER, monmonde.bleu);
   placerAuMonde((monmonde.rouge)->unites, &monmonde, 10, 6);
+  placerAuMonde((monmonde.bleu)->unites, &monmonde, 10, 5);
   affichePlateau(monmonde);
-  deplacerUnite((monmonde.rouge)->unites, &monmonde, 9, 5);
+
+
+ attaquer(monmonde.plateau[10][6],&monmonde,10,5);
   affichePlateau(monmonde);
   enleverUnite((monmonde.rouge)->unites, &monmonde);
   affichePlateau(monmonde);
