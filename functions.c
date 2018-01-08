@@ -130,6 +130,10 @@ void enleverUnite(Unite *unite, Monde *monde) {
   monde->plateau[unite->posX][unite->posY] = NULL;
 }
 
+
+
+
+
 UListe *getUListe(char couleur, Monde *monde) {
   if(couleur == (monde->rouge)->couleur) {
     return (monde->rouge);
@@ -146,8 +150,27 @@ UListe *getUListe(char couleur, Monde *monde) {
 Unite *getUnitePrec(Unite *unite, UListe *uliste) {
   Unite *search;
   search = uliste->unites;
-  while(search != NULL || search->suiv != unite || search != unite) {
+  while(search != NULL && search->suiv != unite && search != unite) {
     search = search->suiv;
   }
   return search;
 }
+
+
+
+int attaquer(Unite *unite, Monde *monde, int destX, int destY){
+    if(monde->plateau[destX][destY] !=NULL){
+                if (unite->genre==GUERRIER || unite->genre==monde->plateau[destX][destY]->genre){
+                    enleverUnite(monde->plateau[destX][destY],monde);
+                    deplacerUnite(unite,monde,destX,destY);
+                    return 1;
+    }
+         enleverUnite(unite,monde);
+        return 0;
+    }
+        
+   return 0;     
+    
+}
+
+
