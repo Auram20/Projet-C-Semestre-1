@@ -79,21 +79,30 @@ void affichePlateau(Monde monde) {
       if(monde.plateau[i][j] == NULL) {
         printf("    ");
       } else {
-        switch((monde.plateau[i][j])->genre) {
-          case(SERF):
-            printf(" 00 ");
-            break;
-          case(GUERRIER):
-          printf(" () ");
-            break;
-        }
-      }
+         if (monde.plateau[i][j]->genre==GUERRIER && monde.plateau[i][j]->couleur==ROUGE){
+             printf(" ()R");
+         }
+        
+          else if (monde.plateau[i][j]->genre==GUERRIER && monde.plateau[i][j]->couleur==BLEU){
+             printf(" ()B");
+         }
+          
+           else if (monde.plateau[i][j]->genre==SERF && monde.plateau[i][j]->couleur==ROUGE){
+             printf(" 00R");
+         }
+          
+           else if (monde.plateau[i][j]->genre==SERF && monde.plateau[i][j]->couleur==BLEU){
+             printf(" 00B");
+         }
+            }
+     
       printf("|");
     }
     printf("\n");
   }
   ligne();
 }
+
 
 
 
@@ -192,14 +201,14 @@ void afficherUnite(Unite unite) {
 
 
 int attaquer(Unite *unite, Monde *monde, int destX, int destY){
-    if(monde->plateau[destX][destY] !=NULL){
+    if(monde->plateau[destX][destY] !=NULL && unite->couleur!= monde->plateau[destX][destY]->couleur ){
                 if (unite->genre==GUERRIER || unite->genre==monde->plateau[destX][destY]->genre){
                     enleverUnite(monde->plateau[destX][destY],monde);
                     deplacerUnite(unite,monde,destX,destY);
                     return 1;
-    }
-         enleverUnite(unite,monde);
-        return 0;
+                        }
+                    enleverUnite(unite,monde);
+                    return 0;
     }
 
    return 0;
