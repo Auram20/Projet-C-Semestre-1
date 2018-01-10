@@ -79,6 +79,7 @@ void affichePlateau(Monde monde) {
       if(monde.plateau[i][j] == NULL) {
         printf("    ");
       } else {
+        /*faire fonction*/
         switch((monde.plateau[i][j])->genre) {
           case(SERF):
             printf(" 00 ");
