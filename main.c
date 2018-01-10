@@ -11,11 +11,15 @@ int main(void) {
     printf("Erreur Mémoire\n");
     return EXIT_FAILURE;
   }
+
   affichePlateau(monmonde);
-  creerUnite(SERF, monmonde.rouge);
-  creerUnite(GUERRIER, monmonde.bleu);
-  placerAuMonde((monmonde.rouge)->unites, &monmonde, 10, 6);
-  placerAuMonde((monmonde.bleu)->unites, &monmonde, 10, 5);
+  if(!placerAuMonde(creerUnite(SERF, monmonde.rouge), &monmonde, 10, 6)) {
+    printf("Erreur Placement Unite\n");
+  }
+  if(!placerAuMonde(creerUnite(GUERRIER, monmonde.bleu), &monmonde, 10, 5)) {
+    printf("Erreur Placement Unite\n");
+  }
+
   affichePlateau(monmonde);
 
 

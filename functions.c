@@ -31,12 +31,10 @@ void initialiserPlateau(Unite *plateau[LONG][LARG]) {
   }
 }
 
-int creerUnite(char genre, UListe *uliste) {
+Unite *creerUnite(char genre, UListe *uliste) {
   Unite *temp;
   temp = calloc(1, sizeof(*(uliste->unites)));
-  if(temp == NULL) {
-    return 0;
-  } else {
+  if(temp != NULL) {
     temp->genre = genre;
     temp->couleur = uliste->couleur;
     temp->suiv = NULL;
@@ -45,8 +43,9 @@ int creerUnite(char genre, UListe *uliste) {
     } else {
       dernier(*uliste)->suiv = temp;
     }
-    return 1;
   }
+
+  return temp;
 
 }
 
@@ -60,7 +59,7 @@ Unite *dernier(UListe uliste) {
 }
 
 int placerAuMonde(Unite *unite, Monde *monde, size_t posX, size_t posY) {
-  if(monde->plateau[posX][posY] != NULL || posX >= LONG || posY >= LARG) {
+  if(unite == NULL || monde->plateau[posX][posY] != NULL || posX >= LONG || posY >= LARG) {
     return 0;
   } else {
     unite->posX = posX;
