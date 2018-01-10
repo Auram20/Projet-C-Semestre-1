@@ -72,30 +72,40 @@ int placerAuMonde(Unite *unite, Monde *monde, size_t posX, size_t posY) {
 
 void affichePlateau(Monde monde) {
   size_t i, j;
+  ligne();
   for(i = 0; i < LONG; ++i) {
-    ligne();
     printf("|");
     for(j = 0; j < LARG; ++j) {
       if(monde.plateau[i][j] == NULL) {
         printf("    ");
       } else {
-        /*faire fonction*/
-        switch((monde.plateau[i][j])->genre) {
-          case(SERF):
-            printf(" 00 ");
-            break;
-          case(GUERRIER):
-          printf(" () ");
-            break;
-        }
+        char *symbol = getSymbol(monde.plateau[i][j]->genre);
+        printf(" %s%c", symbol, monde.plateau[i][j]->couleur);
+        free(symbol);
       }
       printf("|");
     }
     printf("\n");
+    ligne();
   }
-  ligne();
 }
 
+char *getSymbol(char genre) {
+  char *string;
+  string = malloc(3 * sizeof(*string));
+  switch(genre) {
+    case(GUERRIER):
+      strcpy(string, "()");
+      break;
+    case(SERF):
+      strcpy(string, "00");
+      break;
+    default:
+      strcpy(string, "xx");
+      break;
+  }
+  return string;
+}
 
 
 void ligne() {
@@ -209,14 +219,14 @@ void afficherUnite(Unite unite) {
 
 
 int attaquer(Unite *unite, Monde *monde, int destX, int destY){
-    if(monde->plateau[destX][destY] !=NULL){
+    if(monde->plateau[destX][destY] !=NULL && unite->couleur!= monde->plateau[destX][destY]->couleur ){
                 if (unite->genre==GUERRIER || unite->genre==monde->plateau[destX][destY]->genre){
                     enleverUnite(monde->plateau[destX][destY],monde);
                     deplacerUnite(unite,monde,destX,destY);
                     return 1;
-    }
-         enleverUnite(unite,monde);
-        return 0;
+                        }
+                    enleverUnite(unite,monde);
+                    return 0;
     }
 
    return 0;
