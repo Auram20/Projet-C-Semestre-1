@@ -11,6 +11,8 @@
 #define SERF 's'
 #define GUERRIER 'g'
 
+#define MAXCHAR 12
+
 typedef struct Unite {
     int posX,posY;
     char couleur;

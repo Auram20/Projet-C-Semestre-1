@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "structures.h"
 #include "functions.h"
 
@@ -107,7 +108,7 @@ void ligne() {
 
 
 void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
-    if(monde->plateau[destX][destY] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjascent */
+    if(monde->plateau[destX][destY] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjacent */
     {
                     monde->plateau[unite->posX][unite->posY]=NULL;
                     unite->posX = destX;
@@ -125,8 +126,8 @@ void enleverUnite(Unite *unite, Monde *monde) {
   } else if(unitePrec != NULL) {
     unitePrec->suiv = unite->suiv;
   }
-
   monde->plateau[unite->posX][unite->posY] = NULL;
+  free(unite);
 }
 
 
@@ -155,11 +156,13 @@ Unite *getUnitePrec(Unite *unite, UListe *uliste) {
   return search;
 }
 
-/*void gererTourJoueur(char couleur, Monde *monde) {
+void gererTourJoueur(char couleur, Monde *monde) {
+  Unite *selection;
   affichePlateau(*monde);
   printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
-  Unite *uniteSel = parcourirUnites(getUListe(couleur, monde));
-
+  selection = parcourirUnites(*getUListe(couleur, monde));
+  actionUnite(selection, monde);
+  affichePlateau(*monde);
 }
 
 Unite *parcourirUnites(UListe uliste) {
@@ -173,21 +176,35 @@ Unite *parcourirUnites(UListe uliste) {
       selection = selection->suiv;
     }
     afficherUnite(*selection);
-    printf("Voulez-vous le sélectionner ? (o/n)\n");
-    scanf("%c", cmd);
+    printf("Voulez-vous le selectionner ? (o/n)\n");
+    scanf(" %c", &cmd);
   }
 
   return selection;
 }
 
-void *actionUnite(Unite *unite, Monde *monde) {
-  printf("Que voulez-vous faire ?")
+void actionUnite(Unite *unite, Monde *monde) {
+  char c[MAXCHAR];
+  printf("Que voulez-vous faire ?\n");
+  printf("deplacer | attaquer | attendre\n");
+  scanf(" %s", c);
+  if(strcmp("deplacer", c) == 0) {
+    int posX, posY;
+    printf("Indiquer positions x,y : ");
+    scanf("%d,%d", &posX, &posY);
+    deplacerUnite(unite, monde, posX, posY);
+  } else if(strcmp("attaquer", c) == 0) {
+    int posX, posY;
+    printf("Indiquer positions x,y : ");
+    scanf("%d,%d", &posX, &posY);
+    attaquer(unite, monde, posX, posY);
+  }
 }
 
 void afficherUnite(Unite unite) {
   printf("\tGenre : %c\n", unite.genre);
   printf("\tPositions x,y : %d,%d\n", unite.posX, unite.posY);
-}*/
+}
 
 
 int attaquer(Unite *unite, Monde *monde, int destX, int destY){

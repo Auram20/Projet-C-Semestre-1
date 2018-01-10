@@ -19,14 +19,18 @@ int main(void) {
   if(!placerAuMonde(creerUnite(GUERRIER, monmonde.bleu), &monmonde, 10, 5)) {
     printf("Erreur Placement Unite\n");
   }
+  if(!placerAuMonde(creerUnite(GUERRIER, monmonde.rouge), &monmonde, 1, 5)) {
+    printf("Erreur Placement Unite\n");
+  }
 
-  affichePlateau(monmonde);
+  /*affichePlateau(monmonde);*/
+  gererTourJoueur(ROUGE, &monmonde);
 
 
- attaquer(monmonde.plateau[10][6],&monmonde,10,5);
+ /*attaquer(monmonde.plateau[10][6],&monmonde,10,5);
   affichePlateau(monmonde);
   enleverUnite((monmonde.rouge)->unites, &monmonde);
-  affichePlateau(monmonde);
+  affichePlateau(monmonde);*/
 
   return EXIT_SUCCESS;
 }

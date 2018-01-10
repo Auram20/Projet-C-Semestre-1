@@ -18,5 +18,9 @@ void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY);
 void gererTourJoueur(char couleur, Monde *monde);
 int attaquer(Unite *unite, Monde *monde, int destX, int destY);
 int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY);
+void gererTourJoueur(char couleur, Monde *monde);
+Unite *parcourirUnites(UListe uliste);
+void afficherUnite(Unite unite);
+void actionUnite(Unite *unite, Monde *monde);
 
 #endif /* FUNCTIONS_H_INCLUDED */
