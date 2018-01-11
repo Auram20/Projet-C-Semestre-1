@@ -72,6 +72,7 @@ int placerAuMonde(Unite *unite, Monde *monde, size_t posX, size_t posY) {
 
 void affichePlateau(Monde monde) {
   size_t i, j;
+  afficheNumH(LARG);
   ligne();
   for(i = 0; i < LONG; ++i) {
     printf("|");
@@ -85,11 +86,21 @@ void affichePlateau(Monde monde) {
       }
       printf("|");
     }
+    printf("  %d", i);
     printf("\n");
     ligne();
   }
 }
 
+void afficheNumH(int n) {
+  int i;
+  for(i = 0; i < n; ++i) {
+    printf("  %2d ", i);
+  }
+  printf("\n");
+}
+
+/*À libérer avec free*/
 char *getSymbol(char genre) {
   char *string;
   string = malloc(3 * sizeof(*string));
@@ -168,18 +179,99 @@ Unite *getUnitePrec(Unite *unite, UListe *uliste) {
 }
 
 void gererTourJoueur(char couleur, Monde *monde) {
-  Unite *selection;
+  int selection;
+  char cmd;
+  UListe uliste = *getUListe(couleur, monde);
+  Unite **uniteSelect = creerSelection(uliste);
+  int nUnite = nombreUnite(uliste);
   affichePlateau(*monde);
   printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
-  selection = parcourirUnites(*getUListe(couleur, monde));
-  actionUnite(selection, monde);
-  affichePlateau(*monde);
+  do {
+    selection = parcourirUniteSelect(uniteSelect, nUnite);
+    if(selection != -1) {
+      actionUnite(uniteSelect[selection], monde);
+      nUnite = enleverSelect(uniteSelect, selection, nUnite);
+      affichePlateau(*monde);
+      printf("Voulez-vous arreter votre tour ? (o/n)\n");
+      scanf(" %c", &cmd);
+    } else {
+      printf("Arret du tour !\n");
+      cmd = 'o';
+    }
+  } while(cmd != 'o');
+  free(uniteSelect);
 }
 
+Unite **creerSelection(UListe uliste) {
+  int n = nombreUnite(uliste);
+  int i;
+  Unite **tab = calloc(n, sizeof(*tab));
+  Unite *unite = uliste.unites;
+  for(i = 0; i < n && unite != NULL; ++i) {
+    tab[i] = unite;
+    unite = unite->suiv;
+  }
+
+  return tab;
+}
+
+int nombreUnite(UListe uliste) {
+  Unite *unite;
+  int n = 0;
+  unite = uliste.unites;
+  n += (unite != NULL);
+  while(unite != NULL && unite->suiv != NULL) {
+    unite = (unite->suiv);
+    n++;
+  }
+
+  return n;
+}
+
+int parcourirUniteSelect(Unite **tab, int length) {
+  char cmd = 'n';
+  int i = -1;
+  printf("--------LISTE UNITES--------\n");
+  if(length <= 0) {
+    printf("Plus aucune unite selectionnable\n");
+    printf("----------------------------\n");
+  } else {
+    while(cmd != 'o') {
+      if(i + 1 < length) {
+        ++i;
+      } else {
+        i = 0;
+      }
+      afficherUnite(*tab[i]);
+      printf("Voulez-vous le selectionner ? (o/n)\n");
+      scanf(" %c", &cmd);
+      printf("----------------------------\n");
+    }
+  }
+
+  return i;
+}
+
+int enleverSelect(Unite **tab, size_t indice, size_t length) {
+  if(indice < length - 1) {
+    decaleSelect(tab, indice, length);
+  }
+  return (length - 1);
+}
+
+void decaleSelect(Unite **tab, size_t debut, size_t length) {
+  size_t i;
+  for(i = debut; i < length - 1; ++i) {
+    tab[i] = tab[i + 1];
+  }
+}
+
+/* BACKUP
 Unite *parcourirUnites(UListe uliste) {
   char cmd = 'n';
   Unite *selection;
   selection = uliste.unites;
+  printf("--------LISTE UNITES--------\n");
   while(cmd != 'o') {
     if(selection->suiv == NULL) {
       selection = uliste.unites;
@@ -189,10 +281,11 @@ Unite *parcourirUnites(UListe uliste) {
     afficherUnite(*selection);
     printf("Voulez-vous le selectionner ? (o/n)\n");
     scanf(" %c", &cmd);
+    printf("----------------------------\n");
   }
 
   return selection;
-}
+}*/
 
 void actionUnite(Unite *unite, Monde *monde) {
   char c[MAXCHAR];
