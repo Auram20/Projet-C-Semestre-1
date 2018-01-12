@@ -118,7 +118,6 @@ char *getSymbol(char genre) {
   return string;
 }
 
-
 void ligne() {
   int i;
   for(i = 0; i < LARG * 5 + 1; ++i) {
@@ -128,11 +127,10 @@ void ligne() {
 
 }
 
-
 void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
     if(monde->plateau[destY][destX] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjacent */
     {
-                    monde->plateau[unite->posX][unite->posY]=NULL;
+                    monde->plateau[unite->posY][unite->posX]=NULL;
                     unite->posX = destX;
                     unite->posY = destY;
                     monde->plateau[destY][destX] = unite;
@@ -148,13 +146,9 @@ void enleverUnite(Unite *unite, Monde *monde) {
   } else if(unitePrec != NULL) {
     unitePrec->suiv = unite->suiv;
   }
-  monde->plateau[unite->posX][unite->posY] = NULL;
+  monde->plateau[unite->posY][unite->posX] = NULL;
   free(unite);
 }
-
-
-
-
 
 UListe *getUListe(char couleur, Monde *monde) {
   if(couleur == (monde->rouge)->couleur) {
@@ -182,26 +176,27 @@ void gererTourJoueur(char couleur, Monde *monde) {
   int selection;
   char cmd;
   UListe uliste = *getUListe(couleur, monde);
-  Unite **uniteSelect = creerSelection(uliste);
   int nUnite = nombreUnite(uliste);
-  affichePlateau(*monde);
-  printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
-  do {
-    selection = parcourirUniteSelect(uniteSelect, nUnite);
-    if(selection != -1) {
-      actionUnite(uniteSelect[selection], monde);
-      nUnite = enleverSelect(uniteSelect, selection, nUnite);
-      affichePlateau(*monde);
-      printf("Voulez-vous arreter votre tour ? (o/n)\n");
-      scanf(" %c", &cmd);
-    } else {
-      printf("Arret du tour !\n");
-      cmd = 'o';
-    }
-  } while(cmd != 'o');
-  free(uniteSelect);
+  Unite **uniteSelect = creerSelection(uliste);
+  if(nUnite) {
+    affichePlateau(*monde);
+    printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
+    do {
+      selection = parcourirUniteSelect(uniteSelect, nUnite);
+      if(selection != -1) {
+        actionUnite(uniteSelect[selection], monde);
+        nUnite = enleverSelect(uniteSelect, selection, nUnite);
+        affichePlateau(*monde);
+        printf("Voulez-vous arreter votre tour ? (o/n)\n");
+        scanf(" %c", &cmd);
+      } else {
+        printf("Arret du tour !\n");
+        cmd = 'o';
+      }
+    } while(cmd != 'o');
+    free(uniteSelect);
+  }
 }
-
 
 Unite **creerSelection(UListe uliste) {
   int n = nombreUnite(uliste);
@@ -225,7 +220,7 @@ int nombreUnite(UListe uliste) {
     unite = (unite->suiv);
     n++;
   }
-
+  printf("%d\n", n);
   return n;
 }
 
@@ -311,7 +306,6 @@ void afficherUnite(Unite unite) {
   printf("\tPositions x,y : %d,%d\n", unite.posX, unite.posY);
 }
 
-
 int attaquer(Unite *unite, Monde *monde, int destX, int destY){
     if(monde->plateau[destY][destX] !=NULL && unite->couleur!= monde->plateau[destY][destX]->couleur ){
                 if (unite->genre==GUERRIER || unite->genre==monde->plateau[destY][destX]->genre){
@@ -326,7 +320,6 @@ int attaquer(Unite *unite, Monde *monde, int destX, int destY){
    return 0;
 
 }
-
 
 int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
     if( destX >= LONG || destY >= LARG){
@@ -361,7 +354,6 @@ void viderMonde(Monde *monde) {
   viderUListe(monde->rouge);
   viderUListe(monde->bleu);
   initialiserPlateau(monde->plateau);
-  free(monde);
 }
 
 void viderUListe(UListe *uliste) {
@@ -419,8 +411,6 @@ void placementinitial(Monde *monde){
     placementparjoueur(monde,BLEU);
   }
 }
-
-
 
 void gererPartie(void){
     Monde mondejeu;
