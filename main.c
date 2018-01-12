@@ -11,28 +11,8 @@ int main(void) {
     printf("Erreur Mémoire\n");
     return EXIT_FAILURE;
   }
-    
+
     gererPartie();
-  /*affichePlateau(monmonde);
-  if(!placerAuMonde(creerUnite(SERF, monmonde.rouge), &monmonde, 10, 6)) {
-    printf("Erreur Placement Unite\n");
-  }
-  if(!placerAuMonde(creerUnite(GUERRIER, monmonde.bleu), &monmonde, 10, 5)) {
-    printf("Erreur Placement Unite\n");
-  }
-  if(!placerAuMonde(creerUnite(GUERRIER, monmonde.rouge), &monmonde, 1, 5)) {
-    printf("Erreur Placement Unite\n");
-  }
-
-
-affichePlateau(monmonde);
-  gererTour(&monmonde);
-  viderMonde(&monmonde);*/
-
- /*attaquer(monmonde.plateau[10][6],&monmonde,10,5);
-  affichePlateau(monmonde);
-  enleverUnite((monmonde.rouge)->unites, &monmonde);
-  affichePlateau(monmonde);*/
 
   return EXIT_SUCCESS;
 }

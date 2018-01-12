@@ -389,48 +389,47 @@ int gererTour(Monde *monde) {
 }
 
 void placerunite(Monde *monde, UListe *uliste, char genre){
-    int posX, posY; 
+    int posX, posY;
     scanf("%d,%d", &posX, &posY);
-    while (posY>=LONG && posX>=LARG){
-    printf("Position indisponible \n");
-        scanf("%d,%d", &posX, &posY);
-}
-    
-    placerAuMonde(creerUnite(genre, uliste), monde, posX, posY); 
+    while (!placerAuMonde(creerUnite(genre, uliste), monde, posX, posY)){
+      printf("Position indisponible \n");
+      scanf("%d,%d", &posX, &posY);
+    }
+
 }
 
-void placementparjoueur(Monde *monde, char couleur){  
+void placementparjoueur(Monde *monde, char couleur){
     UListe *uliste=getUListe(couleur,monde);
     printf("Où voulez-vous positionner vos deux serfs ? \n ");
     placerunite(monde,uliste,SERF);
     placerunite(monde,uliste,SERF);
-    printf(" Placez votre guerrier. \n");  
+    printf(" Placez votre guerrier. \n");
     placerunite(monde,uliste,GUERRIER);
 }
 
 void placementinitial(Monde *monde){
-    char couleur;   
+    char couleur;
     printf ("Qui commence ? R ou B \n");
-    scanf("%c",&couleur);  
+    scanf("%c",&couleur);
     placementparjoueur(monde,couleur);
+    printf("À l'autre joueur de placer ses unités :) \n");
     if('B'==couleur){
     placementparjoueur(monde,ROUGE);
-    }
-    printf("À l'autre joueur de placer ses unités :) \n");
-    placementparjoueur(monde,BLEU); 
+  } else {
+    placementparjoueur(monde,BLEU);
+  }
 }
 
 
 
 void gererPartie(void){
-    Monde mondejeu; 
+    Monde mondejeu;
     initialiserMonde(&mondejeu);
     affichePlateau(mondejeu);
     /*3PIONS 1 GUERRIER 2 SERFS */
     placementinitial(&mondejeu);
     printf("Début de la partie \n ");
     affichePlateau(mondejeu);
-    
-   
-}
+    gererTour(&mondejeu);
 
+}
