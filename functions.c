@@ -182,24 +182,26 @@ void gererTourJoueur(char couleur, Monde *monde) {
   int selection;
   char cmd;
   UListe uliste = *getUListe(couleur, monde);
-  Unite **uniteSelect = creerSelection(uliste);
   int nUnite = nombreUnite(uliste);
-  affichePlateau(*monde);
-  printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
-  do {
-    selection = parcourirUniteSelect(uniteSelect, nUnite);
-    if(selection != -1) {
-      actionUnite(uniteSelect[selection], monde);
-      nUnite = enleverSelect(uniteSelect, selection, nUnite);
-      affichePlateau(*monde);
-      printf("Voulez-vous arreter votre tour ? (o/n)\n");
-      scanf(" %c", &cmd);
-    } else {
-      printf("Arret du tour !\n");
-      cmd = 'o';
+  Unite **uniteSelect = creerSelection(uliste);
+  if (nUnite!=0){
+          affichePlateau(*monde);
+          printf("Tour : %d | Joueur : %c\n", monde->tour, couleur);
+          do {
+            selection = parcourirUniteSelect(uniteSelect, nUnite);
+            if(selection != -1) {
+              actionUnite(uniteSelect[selection], monde);
+              nUnite = enleverSelect(uniteSelect, selection, nUnite);
+              affichePlateau(*monde);
+              printf("Voulez-vous arreter votre tour ? (o/n)\n");
+              scanf(" %c", &cmd);
+            } else {
+              printf("Arret du tour !\n");
+              cmd = 'o';
+            }
+          } while(cmd != 'o');
+          free(uniteSelect);
     }
-  } while(cmd != 'o');
-  free(uniteSelect);
 }
 
 
@@ -361,7 +363,6 @@ void viderMonde(Monde *monde) {
   viderUListe(monde->rouge);
   viderUListe(monde->bleu);
   initialiserPlateau(monde->plateau);
-  free(monde);
 }
 
 void viderUListe(UListe *uliste) {
@@ -378,14 +379,12 @@ void viderUListe(UListe *uliste) {
 
 }
 
-int gererTour(Monde *monde) {
-  while(nombreUnite(*(monde->rouge)) > 0 || nombreUnite(*(monde->bleu)) > 0) {
+void gererTour(Monde *monde) {
+  
     ++(monde->tour);
     gererTourJoueur(ROUGE, monde);
     gererTourJoueur(BLEU, monde);
-  }
-
-  return (nombreUnite(*(monde->rouge)) > 0);
+   
 }
 
 void placerunite(Monde *monde, UListe *uliste, char genre){
@@ -420,6 +419,18 @@ void placementinitial(Monde *monde){
   }
 }
 
+int arreterpartie(){
+    char reponse;
+    printf("Voulez vous quitter la partie ? (o/n)\n");
+    scanf(" %c",&reponse);
+    if('o'==reponse){
+       
+        printf("Merci d'avoir joué \n");
+        return 1;
+    }
+    return 0;
+}
+
 
 
 void gererPartie(void){
@@ -430,6 +441,20 @@ void gererPartie(void){
     placementinitial(&mondejeu);
     printf("Début de la partie \n ");
     affichePlateau(mondejeu);
+    while( !arreterpartie(&mondejeu) && (nombreUnite(*(mondejeu.rouge)) > 0 && nombreUnite(*(mondejeu.bleu)) > 0)) {
     gererTour(&mondejeu);
-
+    }
+        viderMonde(&mondejeu);
+    
+    
+    if (nombreUnite(*(mondejeu.bleu)) ==0)
+    {
+         viderMonde(&mondejeu);
+        printf("Fin de la partie, le joueur ROUGE a gagné !");
+    }
+    if (nombreUnite(*(mondejeu.rouge)) ==0)
+    {
+         viderMonde(&mondejeu);
+        printf("Fin de la partie, le joueur BLEU a gagné !");
+    }
 }

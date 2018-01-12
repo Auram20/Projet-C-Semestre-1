@@ -31,7 +31,7 @@ void afficherUnite(Unite unite);
 void actionUnite(Unite *unite, Monde *monde);
 void viderMonde(Monde *monde);
 void viderUListe(UListe *uliste);
-int gererTour(Monde *monde);
+void gererTour(Monde *monde);
 void placerunite(Monde *monde, UListe *uliste, char genre);
 void placementparjoueur(Monde *monde, char couleur);
 void placementinitial(Monde *monde);
