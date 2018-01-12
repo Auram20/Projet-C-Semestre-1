@@ -11,8 +11,9 @@ int main(void) {
     printf("Erreur Mémoire\n");
     return EXIT_FAILURE;
   }
-
-  affichePlateau(monmonde);
+    
+    gererPartie();
+  /*affichePlateau(monmonde);
   if(!placerAuMonde(creerUnite(SERF, monmonde.rouge), &monmonde, 10, 6)) {
     printf("Erreur Placement Unite\n");
   }
@@ -23,7 +24,7 @@ int main(void) {
     printf("Erreur Placement Unite\n");
   }
 
-  /*affichePlateau(monmonde);*/
+  /*affichePlateau(monmonde);
   gererTourJoueur(ROUGE, &monmonde);
 
 

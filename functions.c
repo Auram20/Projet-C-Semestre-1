@@ -1,4 +1,4 @@
-#include <stdio.h>
+    #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "structures.h"
@@ -202,6 +202,7 @@ void gererTourJoueur(char couleur, Monde *monde) {
   free(uniteSelect);
 }
 
+
 Unite **creerSelection(UListe uliste) {
   int n = nombreUnite(uliste);
   int i;
@@ -354,4 +355,53 @@ int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
         return 3;
     }
     return 0;
+}
+
+void placerunite(Monde *monde, UListe *uliste, char genre){
+    int posX, posY; 
+    scanf("%d,%d", &posX, &posY);
+    while (posY>=LONG && posX>=LARG){
+    printf("Position indisponible \n");
+        scanf("%d,%d", &posX, &posY);
+}
+    
+    placerAuMonde(creerUnite(genre, uliste), monde, posX, posY); 
+}
+
+void placementparjoueur(Monde *monde, char couleur){  
+    UListe *uliste=getUListe(couleur,monde);
+    printf("Où voulez-vous positionner vos deux serfs ? \n ");
+    placerunite(monde,uliste,SERF);
+    placerunite(monde,uliste,SERF);
+    printf(" Placez votre guerrier. \n");  
+    placerunite(monde,uliste,GUERRIER);
+}
+
+void placementinitial(Monde *monde){
+    char couleur;   
+    printf ("Qui commence ? R ou B \n");
+    scanf("%c",&couleur);  
+    placementparjoueur(monde,couleur);
+    if('B'==couleur){
+    placementparjoueur(monde,ROUGE);
+    }
+    printf("À l'autre joueur de placer ses unités :) \n");
+    placementparjoueur(monde,BLEU); 
+}
+
+
+
+void gererPartie(void){
+    Monde mondejeu; 
+    initialiserMonde(&mondejeu);
+    affichePlateau(mondejeu);
+    /*3PIONS 1 GUERRIER 2 SERFS */
+    placementinitial(&mondejeu);
+    printf("Début de la partie");
+    affichePlateau(mondejeu);
+    
+   
+    
+    
+    
 }
