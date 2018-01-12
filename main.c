@@ -24,9 +24,10 @@ int main(void) {
     printf("Erreur Placement Unite\n");
   }
 
-  /*affichePlateau(monmonde);
-  gererTourJoueur(ROUGE, &monmonde);
 
+affichePlateau(monmonde);
+  gererTour(&monmonde);
+  viderMonde(&monmonde);*/
 
  /*attaquer(monmonde.plateau[10][6],&monmonde,10,5);
   affichePlateau(monmonde);

@@ -29,9 +29,11 @@ void decaleSelect(Unite **tab, size_t debut, size_t length);
 /*Unite *parcourirUnites(UListe uliste); BACKUP*/
 void afficherUnite(Unite unite);
 void actionUnite(Unite *unite, Monde *monde);
+void viderMonde(Monde *monde);
+void viderUListe(UListe *uliste);
+int gererTour(Monde *monde);
 void placerunite(Monde *monde, UListe *uliste, char genre);
 void placementparjoueur(Monde *monde, char couleur);
 void placementinitial(Monde *monde);
 void gererPartie(void);
-
 #endif /* FUNCTIONS_H_INCLUDED */
