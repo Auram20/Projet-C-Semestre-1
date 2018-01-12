@@ -140,9 +140,10 @@ void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
 }
 
 void enleverUnite(Unite *unite, Monde *monde) {
-  Unite *unitePrec = getUnitePrec(unite, getUListe(unite->couleur, monde));
+  UListe *uliste = getUListe(unite->couleur, monde);
+  Unite *unitePrec = getUnitePrec(unite, uliste);
   if(unitePrec == unite) {
-    unitePrec = unite->suiv;
+    uliste->unites = unite->suiv;
   } else if(unitePrec != NULL) {
     unitePrec->suiv = unite->suiv;
   }
@@ -221,7 +222,6 @@ int nombreUnite(UListe uliste) {
     unite = (unite->suiv);
     n++;
   }
-  printf("%d\n", n);
   return n;
 }
 
@@ -372,11 +372,11 @@ void viderUListe(UListe *uliste) {
 }
 
 void gererTour(Monde *monde) {
-  
+
     ++(monde->tour);
     gererTourJoueur(ROUGE, monde);
     gererTourJoueur(BLEU, monde);
-   
+
 }
 
 void placerunite(Monde *monde, UListe *uliste, char genre){
@@ -393,9 +393,9 @@ void placementparjoueur(Monde *monde, char couleur){
     UListe *uliste=getUListe(couleur,monde);
     printf("Où voulez-vous positionner vos deux serfs ? \n ");
     placerunite(monde,uliste,SERF);
-    placerunite(monde,uliste,SERF);
+    /*placerunite(monde,uliste,SERF);*/
     printf(" Placez votre guerrier. \n");
-    placerunite(monde,uliste,GUERRIER);
+    /*placerunite(monde,uliste,GUERRIER);*/
 }
 
 void placementinitial(Monde *monde){
@@ -416,7 +416,7 @@ int arreterpartie(){
     printf("Voulez vous quitter la partie ? (o/n)\n");
     scanf(" %c",&reponse);
     if('o'==reponse){
-       
+
         printf("Merci d'avoir joué \n");
         return 1;
     }
@@ -436,17 +436,13 @@ void gererPartie(void){
     while( !arreterpartie(&mondejeu) && (nombreUnite(*(mondejeu.rouge)) > 0 && nombreUnite(*(mondejeu.bleu)) > 0)) {
     gererTour(&mondejeu);
     }
-        viderMonde(&mondejeu);
-    
-    
-    if (nombreUnite(*(mondejeu.bleu)) ==0)
+        /*viderMonde(&mondejeu);*/
+
+
+    if (nombreUnite(*(mondejeu.bleu)) <= 0)
     {
-         viderMonde(&mondejeu);
         printf("Fin de la partie, le joueur ROUGE a gagné !");
-    }
-    if (nombreUnite(*(mondejeu.rouge)) ==0)
-    {
-         viderMonde(&mondejeu);
+    } else {
         printf("Fin de la partie, le joueur BLEU a gagné !");
     }
 }
