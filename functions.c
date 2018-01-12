@@ -71,7 +71,7 @@ int placerAuMonde(Unite *unite, Monde *monde, size_t posX, size_t posY) {
 }
 
 void affichePlateau(Monde monde) {
-  size_t i, j;
+  int i, j;
   afficheNumH(LARG);
   ligne();
   for(i = 0; i < LONG; ++i) {
@@ -354,4 +354,35 @@ int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
         return 3;
     }
     return 0;
+}
+
+void viderMonde(Monde *monde) {
+  viderUListe(monde->rouge);
+  viderUListe(monde->bleu);
+  initialiserPlateau(monde->plateau);
+  free(monde);
+}
+
+void viderUListe(UListe *uliste) {
+  Unite *temp, *unite;
+  temp = uliste->unites;
+  if(temp != NULL) {
+    while(temp->suiv != NULL) {
+      unite = temp;
+      temp = temp->suiv;
+      free(unite);
+    }
+    free(uliste);
+  }
+
+}
+
+int gererTour(Monde *monde) {
+  while(nombreUnite(*(monde->rouge)) > 0 || nombreUnite(*(monde->bleu)) > 0) {
+    ++(monde->tour);
+    gererTourJoueur(ROUGE, monde);
+    gererTourJoueur(BLEU, monde);
+  }
+
+  return (nombreUnite(*(monde->rouge)) > 0);
 }
