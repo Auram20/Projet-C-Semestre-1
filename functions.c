@@ -393,8 +393,10 @@ void placementparjoueur(Monde *monde, char couleur){
     UListe *uliste=getUListe(couleur,monde);
     printf("Où voulez-vous positionner vos deux serfs ? \n ");
     placerunite(monde,uliste,SERF);
+    placerunite(monde,uliste,SERF);
     /*placerunite(monde,uliste,SERF);*/
     printf(" Placez votre guerrier. \n");
+    placerunite(monde,uliste,GUERRIER);
     /*placerunite(monde,uliste,GUERRIER);*/
 }
 
@@ -442,7 +444,11 @@ void gererPartie(void){
     if (nombreUnite(*(mondejeu.bleu)) <= 0)
     {
         printf("Fin de la partie, le joueur ROUGE a gagné !");
-    } else {
+    } 
+    if (nombreUnite(*(mondejeu.rouge)) <= 0){
         printf("Fin de la partie, le joueur BLEU a gagné !");
+    }
+    else{
+    printf("Fin de la partie, pas de gagnants.");
     }
 }
