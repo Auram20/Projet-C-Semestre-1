@@ -392,21 +392,11 @@ void placerUnite(Monde *monde, UListe *uliste, char genre){
 
 void placementParJoueur(Monde *monde, char couleur){
     UListe *uliste=getUListe(couleur,monde);
-<<<<<<< HEAD
     printf("Ou voulez-vous positionner vos deux serfs ? \n ");
     placerUnite(monde,uliste,SERF);
-    /*placerUnite(monde,uliste,SERF);*/
+    placerUnite(monde,uliste,SERF);
     printf(" Placez votre guerrier. \n");
-    /*placerUnite(monde,uliste,GUERRIER);*/
-=======
-    printf("Où voulez-vous positionner vos deux serfs ? \n ");
-    placerunite(monde,uliste,SERF);
-    placerunite(monde,uliste,SERF);
-    /*placerunite(monde,uliste,SERF);*/
-    printf(" Placez votre guerrier. \n");
-    placerunite(monde,uliste,GUERRIER);
-    /*placerunite(monde,uliste,GUERRIER);*/
->>>>>>> 8ecb39559390222804cccae78bee6b7336ec626a
+    placerUnite(monde,uliste,GUERRIER);
 }
 
 void placementInitial(Monde *monde){
@@ -454,7 +444,6 @@ void gererPartie(void){
     arret = arreterPartie(mondejeu);
     }
         /*viderMonde(&mondejeu);*/
-<<<<<<< HEAD
     if(!arret) {
       if (nombreUnite(*(mondejeu.bleu)) <= 0)
       {
@@ -462,18 +451,8 @@ void gererPartie(void){
       } else {
           printf("Fin de la partie, le joueur BLEU a gagne !");
       }
-=======
-
-
-    if (nombreUnite(*(mondejeu.bleu)) <= 0)
-    {
-        printf("Fin de la partie, le joueur ROUGE a gagné !");
-    } 
-    if (nombreUnite(*(mondejeu.rouge)) <= 0){
-        printf("Fin de la partie, le joueur BLEU a gagné !");
->>>>>>> 8ecb39559390222804cccae78bee6b7336ec626a
     }
     else{
-    printf("Fin de la partie, pas de gagnants.");
+      printf("Fin de la partie, pas de gagnants.");
     }
 }
