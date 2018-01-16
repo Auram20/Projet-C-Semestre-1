@@ -32,8 +32,8 @@ void actionUnite(Unite *unite, Monde *monde);
 void viderMonde(Monde *monde);
 void viderUListe(UListe *uliste);
 void gererTour(Monde *monde);
-void placerunite(Monde *monde, UListe *uliste, char genre);
-void placementparjoueur(Monde *monde, char couleur);
-void placementinitial(Monde *monde);
+void placerUnite(Monde *monde, UListe *uliste, char genre);
+void placementParJoueur(Monde *monde, char couleur);
+void placementInitial(Monde *monde);
 void gererPartie(void);
 #endif /* FUNCTIONS_H_INCLUDED */

@@ -1,4 +1,4 @@
-    #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "structures.h"
@@ -42,7 +42,8 @@ Unite *creerUnite(char genre, UListe *uliste) {
     if(uliste->unites == NULL) {
       uliste->unites = temp;
     } else {
-      dernier(*uliste)->suiv = temp;
+      temp->suiv = uliste->unites;
+      uliste->unites = temp;
     }
   }
 
@@ -379,7 +380,7 @@ void gererTour(Monde *monde) {
 
 }
 
-void placerunite(Monde *monde, UListe *uliste, char genre){
+void placerUnite(Monde *monde, UListe *uliste, char genre){
     int posX, posY;
     scanf("%d,%d", &posX, &posY);
     while (!placerAuMonde(creerUnite(genre, uliste), monde, posX, posY)){
@@ -389,33 +390,37 @@ void placerunite(Monde *monde, UListe *uliste, char genre){
 
 }
 
-void placementparjoueur(Monde *monde, char couleur){
+void placementParJoueur(Monde *monde, char couleur){
     UListe *uliste=getUListe(couleur,monde);
-    printf("Où voulez-vous positionner vos deux serfs ? \n ");
-    placerunite(monde,uliste,SERF);
-    /*placerunite(monde,uliste,SERF);*/
+    printf("Ou voulez-vous positionner vos deux serfs ? \n ");
+    placerUnite(monde,uliste,SERF);
+    /*placerUnite(monde,uliste,SERF);*/
     printf(" Placez votre guerrier. \n");
-    /*placerunite(monde,uliste,GUERRIER);*/
+    /*placerUnite(monde,uliste,GUERRIER);*/
 }
 
-void placementinitial(Monde *monde){
+void placementInitial(Monde *monde){
     char couleur;
-    printf ("Qui commence ? R ou B \n");
-    scanf("%c",&couleur);
-    placementparjoueur(monde,couleur);
+    printf("Qui commence ? (R/B) \n");
+    scanf(" %c",&couleur);
+    while(couleur != ROUGE && couleur != BLEU) {
+      printf("Veuillez utiliser les commandes indiquees !\n");
+      scanf(" %c",&couleur);
+    }
+    placementParJoueur(monde,couleur);
     printf("À l'autre joueur de placer ses unités :) \n");
-    if('B'==couleur){
-    placementparjoueur(monde,ROUGE);
+    if('B' == couleur){
+    placementParJoueur(monde,ROUGE);
   } else {
-    placementparjoueur(monde,BLEU);
+    placementParJoueur(monde,BLEU);
   }
 }
 
-int arreterpartie(){
+int arreterPartie(){
     char reponse;
     printf("Voulez vous quitter la partie ? (o/n)\n");
     scanf(" %c",&reponse);
-    if('o'==reponse){
+    if('o' == reponse){
 
         printf("Merci d'avoir joué \n");
         return 1;
@@ -427,22 +432,24 @@ int arreterpartie(){
 
 void gererPartie(void){
     Monde mondejeu;
+    int arret = 0;
     initialiserMonde(&mondejeu);
     affichePlateau(mondejeu);
     /*3PIONS 1 GUERRIER 2 SERFS */
-    placementinitial(&mondejeu);
-    printf("Début de la partie \n ");
+    placementInitial(&mondejeu);
+    printf("Debut de la partie \n ");
     affichePlateau(mondejeu);
-    while( !arreterpartie(&mondejeu) && (nombreUnite(*(mondejeu.rouge)) > 0 && nombreUnite(*(mondejeu.bleu)) > 0)) {
+    while( !arret && (nombreUnite(*(mondejeu.rouge)) > 0 && nombreUnite(*(mondejeu.bleu)) > 0)) {
     gererTour(&mondejeu);
+    arret = arreterPartie(mondejeu);
     }
         /*viderMonde(&mondejeu);*/
-
-
-    if (nombreUnite(*(mondejeu.bleu)) <= 0)
-    {
-        printf("Fin de la partie, le joueur ROUGE a gagné !");
-    } else {
-        printf("Fin de la partie, le joueur BLEU a gagné !");
+    if(!arret) {
+      if (nombreUnite(*(mondejeu.bleu)) <= 0)
+      {
+          printf("Fin de la partie, le joueur ROUGE a gagne !");
+      } else {
+          printf("Fin de la partie, le joueur BLEU a gagne !");
+      }
     }
 }
