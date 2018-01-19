@@ -385,8 +385,8 @@ void placerUnite(Monde *monde, UListe *uliste, char genre){
     int posX, posY;
     int k = scanf("%d,%d", &posX, &posY);
     Unite *unite = creerUnite(genre, uliste);
-    
-    while ((k < 2) && !placerAuMonde(unite, monde, posX, posY)){
+
+    while ((k < 2) || !placerAuMonde(unite, monde, posX, posY)){
       printf("Position indisponible \n");
       k = scanf("%d,%d", &posX, &posY);
     }
