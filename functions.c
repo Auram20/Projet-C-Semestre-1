@@ -22,7 +22,6 @@ int initialiserMonde(Monde *monde){
     return 1;
 }
 
-/*Je suis obligé de mettre les tailles du tableau pour une raison que j'ignore*/
 void initialiserPlateau(Unite *plateau[LONG][LARG]) {
   size_t i, j;
   for(i = 0; i < LONG; ++i) {
@@ -128,15 +127,17 @@ void ligne() {
 
 }
 
-void deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
+int deplacerUnite(Unite *unite, Monde *monde, int destX, int destY){
     if(monde->plateau[destY][destX] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjacent */
     {
                     monde->plateau[unite->posY][unite->posX]=NULL;
                     unite->posX = destX;
                     unite->posY = destY;
                     monde->plateau[destY][destX] = unite;
-
-        }
+                    return 1;
+    } else {
+      return 0;
+    }
 
 }
 
@@ -323,7 +324,7 @@ int attaquer(Unite *unite, Monde *monde, int destX, int destY){
 
 }
 
-int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
+int deplacerOuAttaquer(Unite *unite, Monde *monde, int destX, int destY){
     if( destX >= LONG || destY >= LARG){
         return -1;
     }
@@ -336,7 +337,7 @@ int deplacerouattaquer(Unite *unite, Monde *monde, int destX, int destY){
         return -3;
     }
 
-    if(monde->plateau[destY][destX] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjascent */
+    if(monde->plateau[destY][destX] == NULL && destX <= LONG && destY <= LARG && abs(destX-(unite->posX))<=1 && abs(destY-(unite->posY))<=1 ) /* On verifie que la destination existe et est vide et que c'est un déplacement adjacent */
     {   deplacerUnite(unite,monde,destX,destY);
 
         return 1;
@@ -382,10 +383,12 @@ void gererTour(Monde *monde) {
 
 void placerUnite(Monde *monde, UListe *uliste, char genre){
     int posX, posY;
-    scanf("%d,%d", &posX, &posY);
-    while (!placerAuMonde(creerUnite(genre, uliste), monde, posX, posY)){
+    int k = scanf("%d,%d", &posX, &posY);
+    Unite *unite = creerUnite(genre, uliste);
+    
+    while ((k < 2) && !placerAuMonde(unite, monde, posX, posY)){
       printf("Position indisponible \n");
-      scanf("%d,%d", &posX, &posY);
+      k = scanf("%d,%d", &posX, &posY);
     }
 
 }
